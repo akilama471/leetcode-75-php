@@ -1,0 +1,78 @@
+/*
+Consider all the leaves of a binary tree, from left to right order, the values of those leaves form a leaf value sequence.
+
+
+
+For example, in the given tree above, the leaf value sequence is (6, 7, 4, 9, 8).
+
+Two binary trees are considered leaf-similar if their leaf value sequence is the same.
+
+Return true if and only if the two given trees with head nodes root1 and root2 are leaf-similar.
+
+ 
+
+Example 1:
+
+
+Input: root1 = [3,5,1,6,2,9,8,null,null,7,4], root2 = [3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]
+Output: true
+Example 2:
+
+
+Input: root1 = [1,2,3], root2 = [1,3,2]
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in each tree will be in the range [1, 200].
+Both of the given trees will have values in the range [0, 200].
+*/
+<?php
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     public $val = null;
+ *     public $left = null;
+ *     public $right = null;
+ *     function __construct($val = 0, $left = null, $right = null) {
+ *         $this->val = $val;
+ *         $this->left = $left;
+ *         $this->right = $right;
+ *     }
+ * }
+ */
+
+class Solution {
+
+    /**
+     * @param TreeNode $root1
+     * @param TreeNode $root2
+     * @return Boolean
+     */
+    function leafSimilar($root1, $root2) {
+        $leaves1 = [];
+        $leaves2 = [];
+
+        // collect leaves for both trees
+        $this->collectLeaves($root1, $leaves1);
+        $this->collectLeaves($root2, $leaves2);
+
+        // compare both leaf arrays
+        return $leaves1 === $leaves2;
+    }
+
+    private function collectLeaves($node, &$leaves) {
+        if ($node === null) return;
+
+        // if it's a leaf node
+        if ($node->left === null && $node->right === null) {
+            $leaves[] = $node->val;
+            return;
+        }
+
+        // DFS traversal
+        $this->collectLeaves($node->left, $leaves);
+        $this->collectLeaves($node->right, $leaves);
+    }
+}
